@@ -1,7 +1,7 @@
 window.onload = function () {
   /*
 
-  JOGO DE DAMAS v1.0
+  JOGO DE DAMAS v0.1
   AUTORES: FRANKLIN SOUSA, DAVID PONTES
   DATA: 02/01/2024
 
