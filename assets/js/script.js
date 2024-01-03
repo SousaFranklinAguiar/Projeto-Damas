@@ -69,6 +69,19 @@ window.onload = function () {
 
   // ===============================================================================================================================================
 
+  function verificaVencedor(){
+    let peçasRestantesClaras = document.querySelectorAll('td[tipobola="claras"]').length;
+    let peçasRestantesEscuras = document.querySelectorAll('td[tipobola="escuras"]').length;
+
+    if(peçasRestantesClaras == 0){
+      alert("Escuras Venceram!")
+    }
+
+    if(peçasRestantesEscuras == 0){
+      alert("Brancas Venceram!");
+    }
+  }
+
   //   GERAR EFEITOS AO CLICAR SOBRE O QUADRADO
 
   function clicar(i) {
@@ -474,6 +487,7 @@ window.onload = function () {
         } catch (error) {}
       }
     }
+    verificaVencedor();
   }
 
   // ===============================================================================================================================================

@@ -17,7 +17,7 @@ main{
     border: 2px solid;
     width: 520px;
     height: 520px;
-    margin-top: 100px;
+    margin-top: 250px;
     background-image: url(/assets/img/boxClara2.png);
     background-size: cover;
 }
@@ -78,5 +78,16 @@ tr:nth-of-type(odd) td:nth-of-type(even), tr:nth-of-type(even) td:nth-of-type(od
     background-color: white;
     background-image: url(/assets/img/boxClara1.png);
     background-size: cover;
+}
+
+@media only screen and (max-width: 600px) {
+    table {
+        width: 350px;
+        height: 350px;
+    }
+    main{
+        width: 370px;
+        height: 370px;
+    }
 }
 
