@@ -227,7 +227,7 @@ export default {
 
 #controlSwitch:checked + .content > .forms > .login > .mesages{
     transform: translateX(0);
-    
+    opacity: 1;
    
 }
 #controlSwitch:checked + .content > .forms > .login > form{
