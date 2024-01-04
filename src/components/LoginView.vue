@@ -181,14 +181,13 @@ export default {
         },
         async logar()  {
             try {
-
                 let temp = {
                     cpf: this.login.user,
                     senha: this.login.pass
                 }
                 alert(JSON.stringify(temp))
-                // let res = await axios.post('http://localhost:8081/login', this.login);
-                // console.log(res);
+                let res = await axios.post('http://localhost:8081/login', this.login);
+                console.log(res);
             } catch (error) {
                 console.log(error)
             }
@@ -208,8 +207,8 @@ export default {
                     senha: this.signin.pass,
                 }
                  alert(JSON.stringify(temp))
-                // let res = await axios.post('http://localhost:8081/cadastro', temp);
-                // console.log(res);
+                let res = await axios.post('http://localhost:8081/cadastro', temp);
+                console.log(res);
             } catch (error) {
                 console.log(error)
             }
