@@ -4,7 +4,7 @@
         <div class="content">
             <div class="switch">
                 <label for="controlSwitch">
-                    Criar conta
+                    Criar Conta
                 </label>
                 <label for="controlSwitch">
                     Entrar
@@ -24,12 +24,12 @@
                     <form @submit.prevent="">
                         <h2>Fazer Login</h2>
                         <div class="form-group">
-                            <label for="">Usuário:</label>
+                            <label for="">CPF:</label>
                             <label for="user" class="input-group">
                                 <span class="material-symbols-outlined">
-                                    database
+                                    badge
                                 </span>
-                                <input type="text" id="user" class="empty-input" v-model="login.user" placeholder="email ou CPF">
+                                <input type="tel" v-mask="'###.###.###-##'" id="user" class="empty-input" v-model="acesso.cpf" placeholder="Digite seu CPF">
                             </label>
                         </div>
                         <div class="form-group">
@@ -38,7 +38,7 @@
                                 <span class="material-symbols-outlined">
                                     lock
                                 </span>
-                                <input :type="controlVision.login? 'text': 'password'" id="pass" class="empty-input" v-model="login.pass" >
+                                <input :type="controlVision.login? 'text': 'password'" placeholder="Digite sua senha" id="pass" class="empty-input" v-model="acesso.senha" >
                                 <span class="material-symbols-outlined"  v-on:click="changeVisible('login')">
                                     {{controlVision.login?  'visibility_off': 'visibility'}}
                                 </span>
@@ -51,39 +51,37 @@
                    
                     
                 </section>
+        
                 <section  class="signin">
-                    
-                    
-
                     <form @submit.prevent="">
-                        <h2>Criar conta</h2>
+                        <h2>Criar Conta</h2>
                         <div class="form-group">
-                                <label for="">Nome completo:</label>
+                                <label for="">Nome Completo:</label>
                                 <label for="mail" class="input-group">
                                     <span class="material-symbols-outlined">
                                         person
                                     </span>
-                                    <input type="text" id="mail" class="empty-input" v-model="signin.user">
+                                    <input type="text" id="mail" class="empty-input" v-model="novoUsuario.nome">
                                 
                                 </label>
                             </div>
                         <div class="form-group">
-                            <label for="">email:</label>
+                            <label for="">E-mail:</label>
                             <label for="mail" class="input-group">
                                 <span class="material-symbols-outlined">
                                     mail
                                 </span>
-                                <input type="text" id="mail" class="empty-input" v-model="signin.email">
+                                <input type="text" id="mail" class="empty-input" v-model="novoUsuario.email">
                                 
                             </label>
                         </div>
                         <div class="form-group">
                             <label for="">Telefone:</label>
-                            <label for="mail" class="input-group">
+                            <label for="phone" class="input-group">
                                 <span class="material-symbols-outlined">
                                     phone
                                 </span>
-                                <input type="text" id="mail" class="empty-input" v-model="signin.phone">
+                                <input type="tel" autocomplete="false" v-mask="'(##)# ####-####'" masked="false" id="phone" class="empty-input" v-model="novoUsuario.telefone">
                                 
                             </label>
                         </div>
@@ -94,7 +92,7 @@
                                 <span class="material-symbols-outlined">
                                     badge
                                 </span>
-                                <input type="text" id="cpf" class="empty-input" v-model="signin.cpf">
+                                <input type="tel" autocomplete="false" v-mask="'###.###.###-##'" id="cpf" class="empty-input" v-model="novoUsuario.cpf">
                             </label>
                         </div>
 
@@ -105,7 +103,7 @@
                                 <span class="material-symbols-outlined">
                                     lock
                                 </span>
-                                <input :type="controlVision.signin? 'text': 'password'" id="newpass" class="empty-input" v-model="signin.pass">
+                                <input :type="controlVision.signin? 'text': 'password'" id="newpass" class="empty-input" v-model="novoUsuario.senha">
                                 <span class="material-symbols-outlined"  v-on:click="changeVisible('signin')">
                                     {{controlVision.signin?  'visibility_off': 'visibility'}}
                                 </span>
@@ -114,7 +112,7 @@
 
 
                         <div class="form-group">
-                            <button class="btn" v-on:click="cadastro()">Criar conta</button>
+                            <button class="btn" v-on:click="cadastro()">Criar Conta</button>
                         </div>
 
                     </form>
@@ -127,6 +125,7 @@
                         </div>
                     </div>
                 </section> 
+
             </section>
         </div>
     </section>
@@ -134,19 +133,21 @@
 
 <script>
 import axios from 'axios';
+import { mask} from "vue-the-mask"
 export default {
+    directives:{ mask},
     
     data() {
         return {
-            login: {
-                user:  '',
-                pass: ''
+            acesso: {
+                cpf:  '',
+                senha: ''
             },
 
-            signin: {
-                user:  '',
-                phone: '',
-                pass:'',
+            novoUsuario: {
+                nome:  '',
+                telefone: '',
+                senha:'',
                 email: '',
                 cpf: ''
             },
@@ -173,12 +174,11 @@ export default {
         },
         async logar()  {
             try {
-                let temp = {
-                    cpf: this.login.user,
-                    senha: this.login.pass
-                }
-                alert(JSON.stringify(temp))
-                let res = await axios.post('http://localhost:8081/login', this.login);
+
+                this.acesso.cpf = this.acesso.cpf.split('.').join("")
+                this.acesso.cpf = this.acesso.cpf.split('-').join("")
+                alert(JSON.stringify(this.acesso))
+                let res = await axios.post('http://localhost:8081/login', this.acesso);
                 console.log(res);
             } catch (error) {
                 console.log(error)
@@ -186,15 +186,15 @@ export default {
         },
         async cadastro() {
             try {
-                let temp = {
-                    nome: this.signin.user,
-                    cpf: this.signin.cpf,
-                    email: this.signin.email,
-                    telefone: this.signin.phone,
-                    senha: this.signin.pass,
-                }
-                 alert(JSON.stringify(temp))
-                let res = await axios.post('http://localhost:8081/cadastro', temp);
+
+                this.novoUsuario.cpf = this.novoUsuario.cpf.split('.').join("")
+                this.novoUsuario.cpf = this.novoUsuario.cpf.split('-').join("")
+                this.novoUsuario.telefone = this.novoUsuario.telefone.split('-').join("")
+                this.novoUsuario.telefone = this.novoUsuario.telefone.split('(').join("")
+                this.novoUsuario.telefone = this.novoUsuario.telefone.split(')').join("")
+                this.novoUsuario.telefone = this.novoUsuario.telefone.split(' ').join("")
+
+                let res = await axios.post('http://localhost:8081/cadastro', this.novoUsuario);
                 console.log(res);
             } catch (error) {
                 console.log(error)
@@ -219,6 +219,7 @@ export default {
         background-image: linear-gradient(to right, #67a4e9, #cdd4dd);
     }
     .content {
+        height: 90vh;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -369,9 +370,7 @@ export default {
             padding: 0;
         }
 
-        .content{
-            height: 90vh;
-        }
+       
         .content::after{
             width: 0;
             height: 0;
