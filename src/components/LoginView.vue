@@ -45,25 +45,35 @@
                             </label>
                         </div>
                         <div class="form-group">
-                            <button class="btn">Entrar</button>
+                            <button class="btn" v-on:click="logar()">Entrar</button>
                         </div>
                     </form>
                    
                     
                 </section>
-                <section  class="singin">
+                <section  class="signin">
                     
                     
 
                     <form @submit.prevent="">
                         <h2>Criar conta</h2>
                         <div class="form-group">
+                                <label for="">Nome completo:</label>
+                                <label for="mail" class="input-group">
+                                    <span class="material-symbols-outlined">
+                                        person
+                                    </span>
+                                    <input type="text" id="mail" class="empty-input" v-model="signin.user">
+                                
+                                </label>
+                            </div>
+                        <div class="form-group">
                             <label for="">email:</label>
                             <label for="mail" class="input-group">
                                 <span class="material-symbols-outlined">
                                     mail
                                 </span>
-                                <input type="text" id="mail" class="empty-input" v-model="sing.email">
+                                <input type="text" id="mail" class="empty-input" v-model="signin.email">
                                 
                             </label>
                         </div>
@@ -72,9 +82,9 @@
                             <label for="">CPF:</label>
                             <label for="cpf" class="input-group">
                                 <span class="material-symbols-outlined">
-                                    person
+                                    badge
                                 </span>
-                                <input type="text" id="cpf" class="empty-input" v-model="sing.cpf">
+                                <input type="text" id="cpf" class="empty-input" v-model="signin.cpf">
                             </label>
                         </div>
 
@@ -85,10 +95,9 @@
                                 <span class="material-symbols-outlined">
                                     lock
                                 </span>
-                                <input :type="controlVision.sigin? 'text': 'password'" id="newpass" class="empty-input" v-model="sing.pass">
-                                <span class="material-symbols-outlined"  v-on:click="changeVisible('singin')">
-                                    {{controlVision.sigin?  'visibility_off': 'visibility'}}
-
+                                <input :type="controlVision.signin? 'text': 'password'" id="newpass" class="empty-input" v-model="signin.pass">
+                                <span class="material-symbols-outlined"  v-on:click="changeVisible('signin')">
+                                    {{controlVision.signin?  'visibility_off': 'visibility'}}
                                 </span>
                             </label>
                         </div>
@@ -99,7 +108,7 @@
                                 <span class="material-symbols-outlined">
                                     lock
                                 </span>
-                                <input :type="controlVision.confirmPass? 'text': 'password'" id="confipass" class="empty-input" v-model="sing.confirmPass">
+                                <input :type="controlVision.confirmPass? 'text': 'password'" id="confipass" class="empty-input" v-model="signin.confirmPass">
                                 <span class="material-symbols-outlined" v-on:click="changeVisible('confirmPass')">
                                     {{controlVision.confirmPass?  'visibility_off': 'visibility'}}
                                 </span>
@@ -107,7 +116,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button class="btn">Criar conta</button>
+                            <button class="btn" v-on:click="cadastro()">Criar conta</button>
                         </div>
 
                     </form>
@@ -126,7 +135,9 @@
 </template>
 
 <script>
+// import axios from 'axios';
 export default {
+    
     data() {
         return {
             login: {
@@ -134,8 +145,9 @@ export default {
                 pass: ''
             },
 
-            sing: {
+            signin: {
                 user:  '',
+                phone: '',
                 pass:'',
                 confirmPass: '',
                 email: '',
@@ -144,27 +156,62 @@ export default {
 
             controlVision: {
                 login: false,
-                sigin: false,
+                signin: false,
                 confirmPass: false
             },
-
         }
     },
+
     methods: {
         changeVisible(val){
             switch (val) {
                 case "confirmPass":
                         this.controlVision.confirmPass = !this.controlVision.confirmPass;
                     break;
-                case "singin":
+                case "signin":
                        
-                        this.controlVision.sigin = !this.controlVision.sigin;
+                        this.controlVision.signin = !this.controlVision.signin;
                     break;
                 case "login":
                         this.controlVision.login = !this.controlVision.login;
                     break;
                 default:
                     break;
+            }
+        },
+        async logar()  {
+            try {
+
+                let temp = {
+                    cpf: this.login.user,
+                    senha: this.login.pass
+                }
+                alert(JSON.stringify(temp))
+                // let res = await axios.post('http://localhost:8081/login', this.login);
+                // console.log(res);
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async cadastro() {
+            if(this.signin.confirmPass != this.signin.pass){
+                return alert("escrita errada")
+            }
+
+            try {
+                
+                let temp = {
+                    nome: this.signin.user,
+                    cpf: this.signin.cpf,
+                    email: this.signin.email,
+                    telefone: this.signin.phone,
+                    senha: this.signin.pass,
+                }
+                 alert(JSON.stringify(temp))
+                // let res = await axios.post('http://localhost:8081/cadastro', temp);
+                // console.log(res);
+            } catch (error) {
+                console.log(error)
             }
         }
     }
@@ -261,11 +308,11 @@ export default {
     #controlSwitch:checked + .content > .forms > .login > form{
         transform: translateX(0);
     }
-    #controlSwitch:checked + .content > .forms > .singin > .mesages{
+    #controlSwitch:checked + .content > .forms > .signin > .mesages{
         transform: translateX(0);
         opacity: 0;
     }
-    #controlSwitch:checked + .content > .forms > .singin > form{
+    #controlSwitch:checked + .content > .forms > .signin > form{
         transform: translateX(0);
     }
     .forms section{
@@ -324,7 +371,7 @@ export default {
     .forms .login .mesages{
         opacity: 0;
     }
-    .forms .singin form, .forms .singin .mesages{
+    .forms .signin form, .forms .signin .mesages{
         transform: translateX(-100%);
     }
 
