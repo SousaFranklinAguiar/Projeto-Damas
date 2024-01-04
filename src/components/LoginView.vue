@@ -77,6 +77,16 @@
                                 
                             </label>
                         </div>
+                        <div class="form-group">
+                            <label for="">Telefone:</label>
+                            <label for="mail" class="input-group">
+                                <span class="material-symbols-outlined">
+                                    phone
+                                </span>
+                                <input type="text" id="mail" class="empty-input" v-model="signin.phone">
+                                
+                            </label>
+                        </div>
 
                         <div class="form-group">
                             <label for="">CPF:</label>
@@ -102,18 +112,6 @@
                             </label>
                         </div>
 
-                        <div class="form-group">
-                            <label for="">Comfirme a senha: </label>
-                            <label for="confipass" class="input-group">
-                                <span class="material-symbols-outlined">
-                                    lock
-                                </span>
-                                <input :type="controlVision.confirmPass? 'text': 'password'" id="confipass" class="empty-input" v-model="signin.confirmPass">
-                                <span class="material-symbols-outlined" v-on:click="changeVisible('confirmPass')">
-                                    {{controlVision.confirmPass?  'visibility_off': 'visibility'}}
-                                </span>
-                            </label>
-                        </div>
 
                         <div class="form-group">
                             <button class="btn" v-on:click="cadastro()">Criar conta</button>
@@ -135,7 +133,7 @@
 </template>
 
 <script>
-// import axios from 'axios';
+import axios from 'axios';
 export default {
     
     data() {
@@ -149,7 +147,6 @@ export default {
                 user:  '',
                 phone: '',
                 pass:'',
-                confirmPass: '',
                 email: '',
                 cpf: ''
             },
@@ -157,7 +154,6 @@ export default {
             controlVision: {
                 login: false,
                 signin: false,
-                confirmPass: false
             },
         }
     },
@@ -165,11 +161,7 @@ export default {
     methods: {
         changeVisible(val){
             switch (val) {
-                case "confirmPass":
-                        this.controlVision.confirmPass = !this.controlVision.confirmPass;
-                    break;
                 case "signin":
-                       
                         this.controlVision.signin = !this.controlVision.signin;
                     break;
                 case "login":
@@ -193,12 +185,7 @@ export default {
             }
         },
         async cadastro() {
-            if(this.signin.confirmPass != this.signin.pass){
-                return alert("escrita errada")
-            }
-
             try {
-                
                 let temp = {
                     nome: this.signin.user,
                     cpf: this.signin.cpf,
@@ -219,7 +206,7 @@ export default {
 
 <style scoped>
 
-    input{
+    input{ 
         width: 100%;
     }
     .body {
@@ -235,7 +222,7 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: clamp(320px, 100%, 1000px);
+        width: 90%;
         background-image: linear-gradient(to bottom, #e47331, #d35a14);
         border-radius: 30px;
         overflow: hidden;
@@ -335,16 +322,18 @@ export default {
         transition: all 0.3s linear;
     }
     .forms section form .form-group{
-        margin-bottom: 20px;
+        margin-bottom: 10px;
+        width: clamp(100px, 300px, 400px);
     }
     .forms section form .input-group{
-        min-width: 350px;
         display: flex;
         align-items: center;
         background-color: #f0f0f0;
         padding-block: 5px ;
         border-radius: 3px;
         overflow: hidden;
+        width: 100%;
+        float: left;
         color: #494949;
     }
     .forms section .mesages{
@@ -374,5 +363,64 @@ export default {
         transform: translateX(-100%);
     }
 
+
+    @media (max-width: 689px) {
+        .switch{
+            padding: 0;
+        }
+
+        .content{
+            height: 90vh;
+        }
+        .content::after{
+            width: 0;
+            height: 0;
+        }
+
+        .forms section .mesages{
+            display: none;
+        }
+
+        .forms .login {
+
+            width: 100%;
+        }
+
+        .forms .signin {
+            right: 0;
+            left: 100%;
+            width: 0;
+        }
+        .forms section{
+            transition: all 0.3s;
+        }
+        .forms section form{
+           
+            transform: translateX(0) !important
+        }
+
+        .forms{
+            height: 100%;
+            justify-content: center;
+        }
+
+       
+        
+
+        #controlSwitch:checked + .content > .forms > .login {
+            width: 0;
+        }
+        
+        #controlSwitch:checked + .content > .forms > .signin {
+            width: 100%;
+            left: 0;
+        }
+        
+        @media (max-width: 375px) {
+            .form-group {
+                width: 100% !important;
+            }
+        }
+    }
 
 </style>
